@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="en" data-store="soon">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Paydar: Subscription Tracker for iPhone and Apple Watch</title>
+<meta name="description" content="Track subscriptions and free trials, see what you really pay, and get a reminder the day before every charge. Free for your first 3, then $2.99 once. No account, no ads, no subscription. iPhone and Apple Watch.">
+<link rel="canonical" href="https://hussamfazal.github.io/paydar/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="author" content="Hussam Fazal">
+<meta name="theme-color" content="#F1F3EE" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1A15" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preload" href="assets/1-home.webp" as="image" type="image/webp">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Paydar">
+<meta property="og:title" content="Paydar: see every charge coming">
+<meta property="og:description" content="The subscription tracker that isn't a subscription. A reminder the day before every charge and before free trials end. Free for your first 3, then $2.99 once. iPhone and Apple Watch.">
+<meta property="og:url" content="https://hussamfazal.github.io/paydar/">
+<meta property="og:image" content="https://hussamfazal.github.io/paydar/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Paydar on iPhone: You pay $133.87 a month, and a reminder that Netflix renews tomorrow">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Paydar: see every charge coming">
+<meta name="twitter:description" content="The subscription tracker that isn't a subscription. A reminder the day before every charge and before free trials end. Free for your first 3, then $2.99 once.">
+<meta name="twitter:image" content="https://hussamfazal.github.io/paydar/og.png">
+<!--
+  LAUNCH DAY CHECKLIST (search this file for REPLACE-ON-LAUNCH):
+  1. On the <html> tag, change data-store="soon" to data-store="live". That swaps every "Coming soon" note for the
+     official App Store badge, which already links to https://apps.apple.com/app/id6820240753 (add ?pt=…&ct=site&mt=8
+     once the provider token is known; LAUNCH-PLAN.md 12.1).
+  2. Uncomment the Smart App Banner meta tag below.
+  3. JSON-LD: change "availability" from PreOrder to InStock and add "installUrl" with the App Store link.
+  4. Done 8 Oct: the support email is support@overcrank.ca (Overcrank's inbox, shared; owner's choice).
+  Nothing on this page is published until the owner says so.
+-->
+<!-- REPLACE-ON-LAUNCH (Smart App Banner):
+<meta name="apple-itunes-app" content="app-id=6820240753">
+-->
+<style>
+@font-face{
+  font-family:"Archivo Wide";
+  src:url(assets/archivo-wide.woff2) format("woff2");
+  font-weight:500 700; font-stretch:62% 125%; font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212,U+FEFF,U+FFFD;
+}
+@property --foil{syntax:"<angle>";inherits:true;initial-value:140deg}
+:root{
+  color-scheme:light dark;
+  /* light sections (follow the system theme) */
+  --bg:#F1F3EE; --card:#FFFFFF; --pale:#E3ECE5; --line:#DFE4DD; --ink:#15201B; --muted:#56625B;
+  --primary:#1D4A39; --on-primary:#FFFFFF; --signal-ink:#8A5A00; --signal-bg:#FBEFD6;
+  --shadow:0 1px 2px rgba(21,32,27,.06),0 10px 30px rgba(21,32,27,.08);
+  /* always-dark surfaces: the hero, the watch, the closing */
+  --night:#0F1A15; --night-2:#0A130F; --night-card:#16241D; --night-line:rgba(191,227,204,.14);
+  --note:#1D4A39; --cotton:#F1F3EE; --mint:#BFE3CC; --amber:#F2B544;
+  /* the app's category tints, used like a banknote's underprints */
+  --t-mint:#9CE3C2; --t-coral:#F0A58E; --t-sky:#95BFE9; --t-aqua:#88D3DB; --t-lilac:#B2ACE8;
+  --t-gold:#F5C578; --t-rose:#DCA4C6; --t-sage:#C4DB9E; --t-sand:#ECDCBD;
+  --foil-g:conic-gradient(from var(--foil),#9CE3C2,#95BFE9,#B2ACE8,#DCA4C6,#F5C578,#C4DB9E,#9CE3C2);
+  --foil-line:linear-gradient(90deg,#9CE3C2,#95BFE9,#B2ACE8,#DCA4C6,#F5C578,#C4DB9E);
+  --text:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --display:-apple-system,BlinkMacSystemFont,"Archivo Wide","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --gutter:16px; --max:1160px;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1A15; --card:#17261F; --pale:#22352C; --line:#2A3A32; --ink:#ECF1EC; --muted:#9AABA2;
+    --primary:#8FD1AE; --on-primary:#0F1A15; --signal-ink:#F2B544; --signal-bg:#3A2E14;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.25);
+    --night:#0B1410; --night-2:#070E0B;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1A15; --card:#17261F; --pale:#22352C; --line:#2A3A32; --ink:#ECF1EC; --muted:#9AABA2;
+  --primary:#8FD1AE; --on-primary:#0F1A15; --signal-ink:#F2B544; --signal-bg:#3A2E14;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.25);
+  --night:#0B1410; --night-2:#070E0B;
+}
+
+/* Base */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{display:block;max-width:100%;height:auto}
+a{color:var(--primary);text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:3px solid var(--t-mint);outline-offset:3px;border-radius:8px}
+p{margin:0 0 14px}
+h1,h2,h3{margin:0;font-weight:600}
+.wide{font-family:var(--display);font-stretch:125%;letter-spacing:-.02em}
+.num{font-variant-numeric:tabular-nums}
+.foil-text{background:var(--foil-g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.skip{position:absolute;left:16px;top:-60px;background:var(--primary);color:var(--on-primary);padding:10px 16px;border-radius:999px;z-index:80;text-decoration:none;font-weight:600}
+.skip:focus{top:12px}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+html[data-store="soon"] .when-live,html[data-store="live"] .when-soon{display:none!important}
+
+/* Floating glass nav */
+.nav{position:fixed;z-index:60;top:10px;left:50%;transform:translateX(-50%);width:min(1120px,calc(100% - 20px));display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:7px 7px 7px 14px;border-radius:999px;background:rgba(10,19,15,.8);-webkit-backdrop-filter:blur(18px) saturate(1.5);backdrop-filter:blur(18px) saturate(1.5);
+  border:1px solid var(--night-line);color:var(--cotton);box-shadow:0 10px 30px -12px rgba(0,0,0,.5)}
+.brand{display:flex;align-items:center;gap:9px;color:inherit;text-decoration:none}
+.brand svg{width:28px;height:28px;flex:none}
+.brand .name{font-family:var(--display);font-stretch:125%;font-weight:600;font-size:21px;letter-spacing:-.01em;line-height:1}
+.nav nav{display:flex;align-items:center;gap:2px}
+.nav nav a{color:rgba(241,243,238,.78);text-decoration:none;font-size:15px;padding:9px 11px;border-radius:999px}
+.nav nav a:hover{color:var(--cotton);background:rgba(191,227,204,.1)}
+.nav .opt{display:none}
+
+/* Hero: always dark, the 3D stage fills it */
+.hero{position:relative;isolation:isolate;overflow:hidden;color:var(--cotton);padding:82px var(--gutter) 0;display:flex;flex-direction:column;height:100svh;min-height:560px;max-height:1000px;
+  background:radial-gradient(90% 70% at 70% 62%,#1B3A2C 0%,rgba(15,26,21,0) 60%),radial-gradient(60% 50% at 10% 0%,#13261D 0%,rgba(15,26,21,0) 70%),linear-gradient(180deg,var(--night) 0%,var(--night-2) 100%)}
+.hero::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:var(--grain);opacity:.07;mix-blend-mode:overlay}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--foil-line);opacity:.75;z-index:4}
+.hero-stage{position:absolute;inset:0;z-index:0}
+.hero-fallback{display:none}
+.hero-copy{position:relative;z-index:2;max-width:var(--max);width:100%;margin:0 auto;flex:none}
+.hero-copy > div{max-width:37rem}
+.hero h1{font-size:clamp(34px,min(10.5vw,6.4svh),64px);line-height:.96;letter-spacing:-.04em;text-wrap:balance;margin:0 0 12px}
+.lede{font-size:16px;line-height:1.45;color:var(--mint);max-width:30em;margin:0 0 16px}
+.denom{display:flex;align-items:center;gap:14px;margin:0 0 16px}
+.denom .amount{font-size:clamp(36px,min(11vw,6svh),56px);line-height:.95;font-weight:600}
+.denom .terms{font-size:16px;line-height:1.3;color:var(--mint);padding-left:16px;border-left:1px solid rgba(191,227,204,.3)}
+.cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px}
+.badge{display:inline-block;border-radius:10px;line-height:0}
+.badge img{height:54px;width:auto}
+.soon{display:inline-flex;align-items:center;gap:10px;min-height:50px;padding:12px 22px 12px 18px;border-radius:999px;color:#0F1A15;background:var(--cotton);font-weight:600;font-size:16px;box-shadow:0 8px 28px -10px rgba(156,227,194,.6)}
+.soon::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(242,181,68,.28)}
+.more{color:var(--cotton);font-weight:600;font-size:16px;text-decoration-color:rgba(241,243,238,.4);padding:10px 0}
+.req{display:none;font-size:14px;line-height:1.45;color:rgba(191,227,204,.82);margin:min(22px,2.4svh) 0 0;max-width:31em}
+.hero-anchor{position:relative;z-index:1;flex:1 0 auto;width:100%;min-height:230px;margin:18px 0 -16svh}
+.hero-anchor .phone{position:absolute;top:0;bottom:0;left:50%;translate:-50% 0;height:100%;width:auto;aspect-ratio:1320/2868;padding:5px;transition:opacity .6s ease}
+.hero-stage.is-3d ~ .hero-anchor .phone{opacity:0}
+.banner{position:absolute;z-index:3;top:4%;left:50%;width:min(340px,calc(100vw - 32px));translate:-50% 0;display:grid;grid-template-columns:38px 1fr auto;gap:2px 11px;align-items:start;
+  padding:12px 14px 13px;border-radius:22px;background:rgba(250,251,249,.9);-webkit-backdrop-filter:blur(18px) saturate(1.6);backdrop-filter:blur(18px) saturate(1.6);
+  color:#15201B;box-shadow:0 0 0 .5px rgba(0,0,0,.08),0 22px 50px -14px rgba(0,0,0,.6);opacity:0;transform:translateY(-12px) scale(.96);transition:opacity .5s ease,transform .55s cubic-bezier(.2,.9,.3,1.15)}
+.banner.is-in{opacity:1;transform:none}
+.banner img{grid-row:span 2;width:38px;height:38px;border-radius:9px}
+.banner b{font-size:15px;line-height:1.25;font-weight:600}
+.banner span{grid-column:2/4;font-size:15px;line-height:1.3;color:#2d3832}
+.banner time{font-size:13px;color:#6c766f;line-height:1.4}
+
+/* Phone and watch frames (the CSS fallback and the inline shots) */
+/* The same phone as the App Store mockups (tools/frame_screenshots.py): near-black green body, thin green rim, slim even bezel */
+.phone{margin:0;padding:1.85%;border-radius:11.3%/5.3%;background:#0E1612;box-shadow:inset 0 0 0 1.5px #3E5449,0 0 0 1px rgba(0,0,0,.4),0 30px 60px -20px rgba(0,0,0,.55)}
+.phone img{width:100%;aspect-ratio:1320/2868;border-radius:9.85%/4.53%;background:#000;object-fit:cover}
+
+/* Sections */
+.section{padding:72px 0}
+.head{max-width:44rem;margin:0 0 30px}
+.head h2{font-size:clamp(32px,1.2rem + 3vw,58px);line-height:1.02;letter-spacing:-.03em;text-wrap:balance;margin:0 0 14px}
+.head p{color:var(--muted);font-size:18px;margin:0;max-width:34em}
+
+/* services marquee */
+.services{padding:84px 0 8px;overflow:hidden}
+.marquee{display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.marquee + .marquee{margin-top:4px}
+.track{display:flex;flex:none;animation:marq 90s linear infinite}
+.marquee.rev .track{animation-direction:reverse;animation-duration:105s}
+.marquee:hover .track{animation-play-state:paused}
+.track > span{display:inline-flex;align-items:center;gap:.45em;padding:0 .5em;white-space:nowrap;font:600 clamp(28px,1rem + 3vw,60px)/1.25 var(--display);font-stretch:125%;letter-spacing:-.025em;color:var(--ink)}
+.track .mark{width:.92em;height:.92em}
+.track > span:nth-child(3n+2){color:transparent;-webkit-text-stroke:1.2px var(--ink)}
+@keyframes marq{to{transform:translateX(-50%)}}
+
+/* Demo */
+.try-grid{display:grid;gap:22px}
+.controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px}
+.controls p{margin:0;color:var(--muted);font-size:15px}
+.seg{display:inline-flex;padding:3px;border-radius:999px;background:var(--pale)}
+.seg button{appearance:none;border:0;background:none;font:600 15px/1 var(--text);color:var(--muted);padding:10px 16px;border-radius:999px;cursor:pointer;min-height:40px}
+.seg button[aria-pressed="true"]{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.chips{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.chip{appearance:none;width:100%;min-height:64px;text-align:left;display:grid;grid-template-columns:30px minmax(0,1fr) 24px;align-items:center;gap:0 11px;padding:11px 12px;border-radius:18px;
+  border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit;cursor:pointer;transition:background-color .15s,border-color .15s,transform .12s}
+.chip .logo,.mark{flex:none;display:grid;place-items:center;overflow:hidden;border-radius:23%;background:var(--bg,#fff);box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.chip .logo{width:30px;height:30px}
+.chip .logo img,.mark img{width:100%;height:100%;object-fit:cover}
+.chip .logo svg,.mark svg{width:62%;height:62%}
+.mark b{font:700 .5em/1 var(--text);color:#fff;letter-spacing:-.02em}
+.chip .txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.chip .n{font-size:15px;font-weight:600;line-height:1.2}
+.chip .p{font-size:14px;color:var(--muted);line-height:1.2}
+.chip .tick{width:24px;height:24px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center}
+.chip .tick svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.4;fill:none;opacity:0}
+.chip[aria-pressed="true"]{background:var(--night-card);border-color:var(--night-card);color:var(--cotton)}
+.chip[aria-pressed="true"] .p{color:var(--mint)}
+.chip[aria-pressed="true"] .tick{border-color:transparent;background:var(--t-mint);color:#0F1A15}
+.chip[aria-pressed="true"] .tick svg{opacity:1}
+.chip:not([aria-pressed="true"]):not([aria-disabled="true"]):hover{border-color:var(--muted)}
+.chip:active{transform:scale(.97)}
+.chip[aria-disabled="true"]{cursor:default;border-style:dashed;background:transparent}
+.chip[aria-disabled="true"] .n{color:var(--muted)}
+.chip[aria-disabled="true"] .tick{visibility:hidden}
+.chip[aria-disabled="true"] .logo{opacity:.55;filter:grayscale(.4)}
+.tally-wrap{position:sticky;bottom:12px;z-index:5;perspective:1000px}
+.tally{container-type:inline-size;position:relative;overflow:hidden;isolation:isolate;border-radius:26px;padding:22px 22px 20px 48px;color:var(--cotton);
+  background:radial-gradient(120% 90% at 100% 0%,#28604A 0%,rgba(29,74,57,0) 55%),var(--note);box-shadow:0 24px 50px -22px rgba(10,30,20,.65),inset 0 0 0 1px rgba(191,227,204,.14);
+  transform:rotateX(var(--ry,0deg)) rotateY(var(--rx,0deg));transition:transform .25s ease}
+.tally::before{content:"";position:absolute;left:16px;top:0;bottom:0;width:14px;background:var(--foil-g);opacity:.9;
+  -webkit-mask:repeating-linear-gradient(180deg,#000 0 6px,rgba(0,0,0,.5) 6px 9px);mask:repeating-linear-gradient(180deg,#000 0 6px,rgba(0,0,0,.5) 6px 9px)}
+.tally .rosette{position:absolute;right:-180px;bottom:-200px;width:460px;height:460px;fill:none;stroke:var(--cotton);stroke-width:.8;opacity:.13;z-index:-1}
+.tally .label{color:var(--mint);font-size:16px;margin:0 0 4px}
+.tally .total{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;margin:0}
+.tally .total strong{font-family:var(--display);font-stretch:125%;font-weight:600;font-size:clamp(30px,13cqi,62px);line-height:1.02;letter-spacing:-.03em;white-space:nowrap}
+.tally .total span{color:var(--mint);font-size:18px}
+.tally .sub{margin:8px 0 0;font-size:16px}
+.tally .vs{margin:14px 0 0;padding-top:14px;border-top:1px dashed rgba(191,227,204,.35);color:var(--mint);font-size:15px;line-height:1.45}
+.tally .vs b{color:var(--amber);font-weight:600}
+.fine{color:var(--muted);font-size:14px;line-height:1.5;margin:18px 0 0;max-width:46rem}
+
+/* Bento */
+.bento{display:grid;gap:14px;grid-template-columns:1fr}
+.tile{position:relative;overflow:hidden;isolation:isolate;border-radius:30px;padding:28px 24px 0;min-height:440px;display:flex;flex-direction:column;
+  transform:perspective(1100px) rotateX(var(--ry,0deg)) rotateY(var(--rx,0deg));transition:transform .3s ease}
+.tile h3{font-family:var(--display);font-stretch:125%;font-weight:600;font-size:clamp(25px,1rem + 1.4vw,34px);line-height:1.08;letter-spacing:-.025em;margin:0 0 12px;text-wrap:balance;max-width:16em}
+.tile p{margin:0;max-width:30em;font-size:16px;line-height:1.5}
+.tile .big{display:block;font-family:var(--display);font-stretch:125%;font-weight:600;font-size:clamp(60px,2rem + 4.6vw,108px);line-height:.92;letter-spacing:-.045em;margin:0 0 10px}
+.tile .shot{margin:auto auto 0;width:min(250px,68%);padding-top:28px}
+.tile .shot .phone{transform:translateY(16%) rotate(var(--tilt,0deg));box-shadow:0 0 0 1px rgba(0,0,0,.3),0 40px 70px -24px rgba(0,0,0,.55)}
+.t-remind{background:radial-gradient(80% 60% at 50% 100%,#1E4636 0%,rgba(22,36,29,0) 70%),var(--night-card);color:var(--cotton)}
+.t-remind p{color:var(--mint)}
+.t-trial{background:var(--amber);color:#15201B}
+.t-cancel{background:var(--t-coral);color:#15201B}
+.t-spend{background:var(--t-sky);color:#15201B}
+.t-cal{background:var(--t-sage);color:#15201B}
+.t-trial p,.t-cancel p,.t-spend p,.t-cal p{color:rgba(21,32,27,.8)}
+.t-trial .shot{--tilt:4deg}.t-cancel .shot{--tilt:-4deg}.t-spend .shot{--tilt:3deg}.t-cal .shot{--tilt:-3deg}
+
+/* Watch */
+.wrist{position:relative;isolation:isolate;overflow:hidden;color:var(--cotton);background:radial-gradient(70% 80% at 25% 50%,#1C3D2E 0%,rgba(15,26,21,0) 65%),var(--night)}
+.wrist::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:var(--grain);opacity:.07;mix-blend-mode:overlay}
+.wrist-grid{display:grid;gap:44px;align-items:center;padding:88px 0}
+.wrist .head{margin:0}
+.wrist .head p{color:var(--mint)}
+.watches{display:flex;justify-content:center;gap:20px;perspective:1100px;padding:20px 0 34px}
+/* The real Apple Watch Ultra case from Xcode's Simulator artwork, with the real watch screens inside */
+.watch{position:relative;width:min(172px,43vw);margin:0;filter:drop-shadow(0 34px 38px rgba(0,0,0,.6)) drop-shadow(0 0 70px rgba(156,227,194,.16))}
+.watch img{width:100%;height:auto}
+.watch:first-child{transform:rotateY(14deg) rotateX(3deg)}
+.watch:last-child{transform:rotateY(-14deg) rotateX(3deg) translateY(34px)}
+.ticks{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:12px}
+.ticks li{position:relative;padding-left:30px;color:rgba(241,243,238,.9)}
+.ticks li::before{content:"";position:absolute;left:2px;top:.38em;width:15px;height:15px;border-radius:50%;border:1.5px solid var(--t-mint)}
+.ticks li::after{content:"";position:absolute;left:7.5px;top:calc(.38em + 5.5px);width:4px;height:4px;border-radius:50%;background:var(--amber)}
+
+/* Privacy and limits */
+.trust{display:grid;gap:16px}
+.panel{position:relative;overflow:hidden;background:var(--card);border-radius:28px;padding:30px 24px 26px;box-shadow:var(--shadow)}
+.panel::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--foil-line)}
+.panel h2{font-size:clamp(28px,1.1rem + 2vw,42px);line-height:1.05;letter-spacing:-.03em;margin:0 0 12px}
+.panel p{color:var(--muted)}
+.facts{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.facts li{border-radius:16px;padding:14px;font-weight:600;font-size:15px;line-height:1.3;color:#15201B}
+.facts li:nth-child(1){background:var(--t-mint)}.facts li:nth-child(2){background:var(--t-sky)}.facts li:nth-child(3){background:var(--t-lilac)}.facts li:nth-child(4){background:var(--t-gold)}
+.facts li span{display:block;font-weight:400;color:rgba(21,32,27,.75);font-size:14px;margin-top:2px}
+.limits{background:var(--signal-bg);color:var(--signal-ink);border-radius:28px;padding:28px 24px;border-left:6px solid var(--amber)}
+.limits h3{font-size:22px;line-height:1.2;margin:0 0 12px}
+.limits ul{margin:0;padding-left:20px}
+.limits li{margin:0 0 8px}
+.limits li:last-child{margin:0}
+
+/* Closing: the Veo clip behind foil numerals */
+.closing{position:relative;isolation:isolate;overflow:hidden;color:var(--cotton);text-align:center;background:var(--night);padding:128px var(--gutter) 112px}
+.closing .bg{position:absolute;inset:0;z-index:-3;width:100%;height:100%;object-fit:cover;opacity:.7}
+.closing .rosette{position:absolute;left:50%;top:50%;width:1100px;height:1100px;transform:translate(-50%,-50%);fill:none;stroke:var(--cotton);stroke-width:.7;opacity:.08;z-index:-4}
+.closing::before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(65% 75% at 50% 50%,rgba(10,19,15,.25) 0%,rgba(10,19,15,.78) 72%,var(--night) 100%)}
+.closing::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background-image:var(--grain);opacity:.07;mix-blend-mode:overlay}
+.closing h2{font-size:clamp(60px,1.5rem + 9vw,160px);line-height:.92;letter-spacing:-.05em;margin:0 0 18px}
+.closing p{color:var(--mint);max-width:31em;margin:0 auto 26px;font-size:18px}
+.closing .cta{justify-content:center}
+.closing .req-line{margin:18px auto 0;font-size:14px;color:rgba(191,227,204,.75)}
+.closing .origin{max-width:40rem;margin:34px auto 0;color:rgba(191,227,204,.78);font-size:15px}
+.origin a{color:var(--cotton)}
+
+/* Help */
+.help-grid{display:grid;gap:16px}
+.group{background:var(--card);border-radius:22px;overflow:hidden;box-shadow:var(--shadow)}
+details{border-top:1px solid var(--line)}
+details:first-child{border-top:0}
+summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 18px;font-weight:600;min-height:56px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";flex:none;width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-right:4px;transition:transform .15s}
+details[open] summary::after{transform:rotate(-135deg)}
+.ans{padding:0 18px 16px}
+.ans p,.ans ol,.ans ul{color:var(--muted)}
+.ans ol,.ans ul{margin:0 0 14px;padding-left:22px}
+.ans li{margin:4px 0}
+.ans strong{color:var(--ink)}
+.ans p:last-child{margin-bottom:0}
+code{font:500 .9em ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--pale);padding:1px 6px;border-radius:6px}
+.contact{background:var(--card);border-radius:22px;padding:22px 20px;box-shadow:var(--shadow)}
+.contact h3{font-size:20px;margin:0 0 8px}
+.contact .mail{font-family:var(--display);font-stretch:125%;font-weight:600;font-size:19px;margin:0 0 10px;word-break:break-word}
+.contact .muted{color:var(--muted);font-size:15px;margin:0}
+footer{border-top:1px solid var(--line);margin-top:24px;padding:24px 0 40px;color:var(--muted);font-size:14px}
+footer .links{display:flex;flex-wrap:wrap;gap:6px 20px;margin:0 0 12px}
+footer .links a{color:var(--muted)}
+footer p{margin:0 0 8px}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .track{animation:none}
+  .banner,.tile,.tally,.chip,.hero-anchor .phone{transition:none}
+  summary::after{transition:none}
+}
+
+@media (max-width:599px){
+  .chip{grid-template-columns:28px minmax(0,1fr);gap:0 10px;padding:10px 11px}
+  .chip .logo{width:28px;height:28px}
+  .chip .tick{display:none}
+  .chip .p{font-size:13px}
+}
+@media (min-width:1000px) and (max-height:760px){
+  .req{display:none!important}
+}
+@media (max-width:599px){
+  .hero .more{display:none}
+}
+/* Larger screens */
+@media (min-width:600px){
+  :root{--gutter:24px}
+  .nav .opt{display:inline-block}
+  .chips{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .facts{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .bento{grid-template-columns:repeat(6,1fr)}
+  .t-remind{grid-column:span 6}
+  .t-trial,.t-cancel,.t-spend,.t-cal{grid-column:span 3}
+}
+@media (min-width:1000px){
+  :root{--gutter:32px}
+  .section{padding:104px 0}
+  .hero{flex-direction:row;align-items:center;height:100svh;min-height:600px;max-height:1100px;padding-top:80px;padding-bottom:28px}
+  .hero h1{font-size:clamp(40px,min(6.2vw,10.6svh),108px);margin-bottom:min(20px,2.2svh)}
+  .lede{font-size:clamp(16px,min(1rem + .35vw,2.5svh),21px);line-height:1.5;margin-bottom:min(26px,2.8svh)}
+  .denom{margin-bottom:min(28px,3svh)}
+  .denom .amount{font-size:clamp(40px,min(2rem + 3.4vw,7.6svh),76px)}
+  .req{display:block}
+  .hero-anchor{position:absolute;margin:0;top:50%;right:max(48px,calc(50% - 540px));height:min(74svh,700px);min-height:0;width:auto;aspect-ratio:1320/2868;translate:0 -44%}
+  .hero-anchor .phone{inset:0;left:0;translate:none;height:auto;width:auto;padding:1.85%}
+  .banner{left:auto;right:58%;top:5%;translate:none;width:360px}
+  .try-grid{grid-template-columns:minmax(0,1fr) 400px;gap:44px;align-items:start}
+  .tally-wrap{top:96px;bottom:auto}
+  .bento{grid-template-columns:repeat(12,1fr)}
+  .t-remind{grid-column:span 7;grid-row:span 2;padding:40px 40px 0}
+  .t-remind .shot{width:min(320px,62%)}
+  .t-trial{grid-column:span 5;min-height:400px}
+  .t-cancel{grid-column:span 5;min-height:400px}
+  .t-spend{grid-column:span 6}
+  .t-cal{grid-column:span 6}
+  .t-trial .shot,.t-cancel .shot{position:absolute;right:20px;bottom:0;width:150px;margin:0;padding:0}
+  .t-trial .shot .phone,.t-cancel .shot .phone{transform:translateY(38%) rotate(var(--tilt))}
+  .t-trial p,.t-cancel p{max-width:calc(100% - 170px)}
+  .wrist-grid{grid-template-columns:1fr 1fr;gap:64px;padding:112px 0}
+  .watch{width:236px}
+  .trust{grid-template-columns:1.3fr 1fr}
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .help-grid{grid-template-columns:minmax(0,1fr) 320px;gap:32px;align-items:start}
+  .help-grid .contact{position:sticky;top:96px}
+}
+@media (min-width:1000px) and (max-width:1239px){
+  .banner{width:300px;right:46%}
+}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Paydar: Subscription Tracker",
+  "alternateName": "Paydar",
+  "description": "Paydar adds up what you pay for each month and year, and reminds you the day before every charge and before free trials end. iPhone and Apple Watch. Free for 3 subscriptions; one in-app purchase unlocks unlimited. No account, no ads, no subscription.",
+  "applicationCategory": "FinanceApplication",
+  "applicationSubCategory": "Subscription tracker",
+  "operatingSystem": "iOS 26, watchOS 26",
+  "softwareRequirements": "iPhone with iOS 26 or later. The Apple Watch app needs watchOS 26 or later.",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "image": "https://hussamfazal.github.io/paydar/og.png",
+  "screenshot": "https://hussamfazal.github.io/paydar/assets/1-home.webp",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/PreOrder",
+    "url": "https://hussamfazal.github.io/paydar/"
+  },
+  "featureList": [
+    "Add subscriptions from 102 built-in services with one tap, or type your own",
+    "Monthly and yearly totals across weekly, monthly, quarterly and yearly billing",
+    "A reminder the day before every charge, and two warnings before a free trial ends",
+    "Spending by category, biggest costs, price changes and a charge calendar",
+    "Apple Watch app, watch face complications, Home Screen and Lock Screen widgets",
+    "Import and export spreadsheets (CSV)",
+    "No account, no ads, no tracking; data stays on your iPhone and Apple Watch"
+  ],
+  "author": { "@type": "Person", "name": "Hussam Fazal", "url": "https://www.youtube.com/@madebyhussam" },
+  "publisher": { "@type": "Person", "name": "Hussam Fazal" },
+  "url": "https://hussamfazal.github.io/paydar/"
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="nav" data-hero-ceiling>
+  <a class="brand" href="./" aria-label="Paydar home">
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="16" cy="16" r="3.9"/><circle cx="16" cy="16" r="8.6"/><circle cx="16" cy="16" r="13.6"/></g><circle cx="20.3" cy="8.55" r="3.4" fill="#F2B544" stroke="#0F1A15" stroke-width="1.6"/></svg>
+    <span class="name">paydar</span>
+  </a>
+  <nav aria-label="Page sections">
+    <a class="opt" href="#try">Your total</a>
+    <a class="opt" href="#features">How it works</a>
+    <a href="#help">Help</a>
+    <a href="privacy.html">Privacy</a>
+  </nav>
+</header>
+
+<main id="main">
+<section class="hero" data-hero aria-labelledby="hero-title">
+  <div class="hero-stage" data-hero3d><figure class="hero-fallback" aria-hidden="true"></figure></div>
+  <div class="hero-copy"><div data-hero-avoid data-hero-copy>
+    <h1 id="hero-title" class="wide">See every charge coming.</h1>
+    <p class="lede">Paydar keeps your subscriptions and free trials in one list, adds up what you really pay, and reminds you the day before every charge. For iPhone and Apple Watch.</p>
+    <p class="denom"><span class="amount wide num foil-text">Free</span><span class="terms">for your first 3.<br>Then $2.99 once. No subscription.</span></p>
+    <div class="cta">
+      <span class="soon when-soon" role="note">Coming soon to the App Store</span>
+      <!-- REPLACE-ON-LAUNCH: shown when data-store="live" -->
+      <a class="badge when-live" href="https://apps.apple.com/app/id6820240753"><img src="assets/app-store-badge-white.svg" width="162" height="54" alt="Download on the App Store"></a>
+      <a class="more" href="#try">Work out what you pay</a>
+    </div>
+    <p class="req">Free download for iPhone with iOS 26 or later; the Apple Watch app is optional (watchOS 26). Unlimited is one in-app purchase: $2.99 in the US, CA$3.99 in Canada. No account, no ads.</p>
+  </div></div>
+  <div class="hero-anchor" data-hero-anchor>
+    <figure class="phone"><img src="assets/1-home.webp" width="640" height="1391" fetchpriority="high" alt="Paydar's Home screen: You pay $133.87 a month and $1,606 a year, a Disney+ free trial with 3 days left, and Netflix, Disney+ and Spotify due in the next 7 days."></figure>
+    <div class="banner" data-hero-banner data-hero-avoid aria-hidden="true">
+      <img src="assets/icon-256.webp" alt="" width="38" height="38">
+      <b>Netflix renews tomorrow</b><time>now</time>
+      <span>$19.99 a month. Tap to review or cancel.</span>
+    </div>
+  </div>
+</section>
+
+<section class="services" aria-labelledby="services-title">
+  <div class="wrap"><div class="head">
+    <h2 id="services-title" class="wide">102 services, one tap each</h2>
+    <p>Tap the ones you pay for and Paydar fills in a typical price for most popular ones. Anything else, add with a name and a price.</p>
+  </div></div>
+  <div class="marquee" aria-hidden="true"><div class="track"><span><span class="mark"><img src="assets/logos/netflix.webp" alt="" width="96" height="96" decoding="async"></span>Netflix</span><span><span class="mark"><img src="assets/logos/disneyplus.webp" alt="" width="96" height="96" decoding="async"></span>Disney+</span><span><span class="mark"><img src="assets/logos/max.webp" alt="" width="96" height="96" decoding="async"></span>HBO Max</span><span><span class="mark" style="--bg:#3B4650"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12.5" rx="2.2" fill="#fff"/><rect x="8" y="18.6" width="8" height="1.8" rx=".9" fill="#fff"/></svg></span>Apple TV</span><span><span class="mark"><img src="assets/logos/peacock.webp" alt="" width="96" height="96" decoding="async"></span>Peacock</span><span><span class="mark"><img src="assets/logos/spotify.webp" alt="" width="96" height="96" decoding="async"></span>Spotify</span><span><span class="mark"><img src="assets/logos/youtubemusic.webp" alt="" width="96" height="96" decoding="async"></span>YouTube Music</span><span><span class="mark"><img src="assets/logos/audible.webp" alt="" width="96" height="96" decoding="async"></span>Audible</span><span><span class="mark" style="--bg:#4F7396"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M7.2 18.5h10.3a4.1 4.1 0 0 0 .5-8.17 5.6 5.6 0 0 0-10.7-1.2A4.7 4.7 0 0 0 7.2 18.5z"/></svg></span>iCloud+</span><span><span class="mark"><img src="assets/logos/dropbox.webp" alt="" width="96" height="96" decoding="async"></span>Dropbox</span><span><span class="mark"><img src="assets/logos/chatgpt.webp" alt="" width="96" height="96" decoding="async"></span>ChatGPT</span><span><span class="mark"><img src="assets/logos/perplexity.webp" alt="" width="96" height="96" decoding="async"></span>Perplexity</span><span><span class="mark"><img src="assets/logos/microsoft365.webp" alt="" width="96" height="96" decoding="async"></span>Microsoft 365</span><span><span class="mark"><img src="assets/logos/canva.webp" alt="" width="96" height="96" decoding="async"></span>Canva</span><span><span class="mark"><img src="assets/logos/notion.webp" alt="" width="96" height="96" decoding="async"></span>Notion</span><span><span class="mark"><img src="assets/logos/nordvpn.webp" alt="" width="96" height="96" decoding="async"></span>NordVPN</span><span><span class="mark"><img src="assets/logos/todoist.webp" alt="" width="96" height="96" decoding="async"></span>Todoist</span><span><span class="mark"><img src="assets/logos/zoom.webp" alt="" width="96" height="96" decoding="async"></span>Zoom</span><span><span class="mark"><img src="assets/logos/duolingo.webp" alt="" width="96" height="96" decoding="async"></span>Duolingo</span><span><span class="mark"><img src="assets/logos/masterclass.webp" alt="" width="96" height="96" decoding="async"></span>MasterClass</span><span><span class="mark"><img src="assets/logos/xbox.webp" alt="" width="96" height="96" decoding="async"></span>Xbox Game Pass</span><span><span class="mark"><img src="assets/logos/nintendo.webp" alt="" width="96" height="96" decoding="async"></span>Nintendo Switch Online</span><span><span class="mark"><img src="assets/logos/wsj.webp" alt="" width="96" height="96" decoding="async"></span>The Wall Street Journal</span><span><span class="mark"><img src="assets/logos/substack.webp" alt="" width="96" height="96" decoding="async"></span>Substack</span><span><span class="mark" style="--bg:#3E8A86"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="14.5" cy="4.6" r="1.9" fill="#fff" stroke="none"/><path d="M8.5 21l3-6.2 3.2 2.4V21M6.5 11.5l3.2-3 4.3 1 2 3.3 3.2.8"/></svg></span>Apple Fitness+</span><span><span class="mark"><img src="assets/logos/peloton.webp" alt="" width="96" height="96" decoding="async"></span>Peloton</span><span><span class="mark"><img src="assets/logos/calm.webp" alt="" width="96" height="96" decoding="async"></span>Calm</span><span><span class="mark"><img src="assets/logos/planetfitness.webp" alt="" width="96" height="96" decoding="async"></span>Planet Fitness</span><span><span class="mark"><img src="assets/logos/uber.webp" alt="" width="96" height="96" decoding="async"></span>Uber One</span><span><span class="mark"><img src="assets/logos/instacart.webp" alt="" width="96" height="96" decoding="async"></span>Instacart+</span><span><span class="mark"><img src="assets/logos/discord.webp" alt="" width="96" height="96" decoding="async"></span>Discord Nitro</span><span><span class="mark"><img src="assets/logos/patreon.webp" alt="" width="96" height="96" decoding="async"></span>Patreon</span><span><span class="mark"><img src="assets/logos/bumble.webp" alt="" width="96" height="96" decoding="async"></span>Bumble</span><span><span class="mark"><img src="assets/logos/netflix.webp" alt="" width="96" height="96" decoding="async"></span>Netflix</span><span><span class="mark"><img src="assets/logos/disneyplus.webp" alt="" width="96" height="96" decoding="async"></span>Disney+</span><span><span class="mark"><img src="assets/logos/max.webp" alt="" width="96" height="96" decoding="async"></span>HBO Max</span><span><span class="mark" style="--bg:#3B4650"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12.5" rx="2.2" fill="#fff"/><rect x="8" y="18.6" width="8" height="1.8" rx=".9" fill="#fff"/></svg></span>Apple TV</span><span><span class="mark"><img src="assets/logos/peacock.webp" alt="" width="96" height="96" decoding="async"></span>Peacock</span><span><span class="mark"><img src="assets/logos/spotify.webp" alt="" width="96" height="96" decoding="async"></span>Spotify</span><span><span class="mark"><img src="assets/logos/youtubemusic.webp" alt="" width="96" height="96" decoding="async"></span>YouTube Music</span><span><span class="mark"><img src="assets/logos/audible.webp" alt="" width="96" height="96" decoding="async"></span>Audible</span><span><span class="mark" style="--bg:#4F7396"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M7.2 18.5h10.3a4.1 4.1 0 0 0 .5-8.17 5.6 5.6 0 0 0-10.7-1.2A4.7 4.7 0 0 0 7.2 18.5z"/></svg></span>iCloud+</span><span><span class="mark"><img src="assets/logos/dropbox.webp" alt="" width="96" height="96" decoding="async"></span>Dropbox</span><span><span class="mark"><img src="assets/logos/chatgpt.webp" alt="" width="96" height="96" decoding="async"></span>ChatGPT</span><span><span class="mark"><img src="assets/logos/perplexity.webp" alt="" width="96" height="96" decoding="async"></span>Perplexity</span><span><span class="mark"><img src="assets/logos/microsoft365.webp" alt="" width="96" height="96" decoding="async"></span>Microsoft 365</span><span><span class="mark"><img src="assets/logos/canva.webp" alt="" width="96" height="96" decoding="async"></span>Canva</span><span><span class="mark"><img src="assets/logos/notion.webp" alt="" width="96" height="96" decoding="async"></span>Notion</span><span><span class="mark"><img src="assets/logos/nordvpn.webp" alt="" width="96" height="96" decoding="async"></span>NordVPN</span><span><span class="mark"><img src="assets/logos/todoist.webp" alt="" width="96" height="96" decoding="async"></span>Todoist</span><span><span class="mark"><img src="assets/logos/zoom.webp" alt="" width="96" height="96" decoding="async"></span>Zoom</span><span><span class="mark"><img src="assets/logos/duolingo.webp" alt="" width="96" height="96" decoding="async"></span>Duolingo</span><span><span class="mark"><img src="assets/logos/masterclass.webp" alt="" width="96" height="96" decoding="async"></span>MasterClass</span><span><span class="mark"><img src="assets/logos/xbox.webp" alt="" width="96" height="96" decoding="async"></span>Xbox Game Pass</span><span><span class="mark"><img src="assets/logos/nintendo.webp" alt="" width="96" height="96" decoding="async"></span>Nintendo Switch Online</span><span><span class="mark"><img src="assets/logos/wsj.webp" alt="" width="96" height="96" decoding="async"></span>The Wall Street Journal</span><span><span class="mark"><img src="assets/logos/substack.webp" alt="" width="96" height="96" decoding="async"></span>Substack</span><span><span class="mark" style="--bg:#3E8A86"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="14.5" cy="4.6" r="1.9" fill="#fff" stroke="none"/><path d="M8.5 21l3-6.2 3.2 2.4V21M6.5 11.5l3.2-3 4.3 1 2 3.3 3.2.8"/></svg></span>Apple Fitness+</span><span><span class="mark"><img src="assets/logos/peloton.webp" alt="" width="96" height="96" decoding="async"></span>Peloton</span><span><span class="mark"><img src="assets/logos/calm.webp" alt="" width="96" height="96" decoding="async"></span>Calm</span><span><span class="mark"><img src="assets/logos/planetfitness.webp" alt="" width="96" height="96" decoding="async"></span>Planet Fitness</span><span><span class="mark"><img src="assets/logos/uber.webp" alt="" width="96" height="96" decoding="async"></span>Uber One</span><span><span class="mark"><img src="assets/logos/instacart.webp" alt="" width="96" height="96" decoding="async"></span>Instacart+</span><span><span class="mark"><img src="assets/logos/discord.webp" alt="" width="96" height="96" decoding="async"></span>Discord Nitro</span><span><span class="mark"><img src="assets/logos/patreon.webp" alt="" width="96" height="96" decoding="async"></span>Patreon</span><span><span class="mark"><img src="assets/logos/bumble.webp" alt="" width="96" height="96" decoding="async"></span>Bumble</span></div></div>
+  <div class="marquee rev" aria-hidden="true"><div class="track"><span><span class="mark"><img src="assets/logos/youtube.webp" alt="" width="96" height="96" decoding="async"></span>YouTube Premium</span><span><span class="mark"><img src="assets/logos/hulu.webp" alt="" width="96" height="96" decoding="async"></span>Hulu</span><span><span class="mark"><img src="assets/logos/primevideo.webp" alt="" width="96" height="96" decoding="async"></span>Prime Video</span><span><span class="mark"><img src="assets/logos/paramountplus.webp" alt="" width="96" height="96" decoding="async"></span>Paramount+</span><span><span class="mark"><img src="assets/logos/crunchyroll.webp" alt="" width="96" height="96" decoding="async"></span>Crunchyroll</span><span><span class="mark" style="--bg:#8A4B55"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18 3.5v11.2a3.1 3.1 0 1 1-2-2.9V8.1l-7 1.6v7.1a3.1 3.1 0 1 1-2-2.9V6.6z"/></svg></span>Apple Music</span><span><span class="mark"><img src="assets/logos/tidal.webp" alt="" width="96" height="96" decoding="async"></span>TIDAL</span><span><span class="mark"><img src="assets/logos/siriusxm.webp" alt="" width="96" height="96" decoding="async"></span>SiriusXM</span><span><span class="mark"><img src="assets/logos/googleone.webp" alt="" width="96" height="96" decoding="async"></span>Google One</span><span><span class="mark"><img src="assets/logos/onedrive.webp" alt="" width="96" height="96" decoding="async"></span>OneDrive</span><span><span class="mark"><img src="assets/logos/claude.webp" alt="" width="96" height="96" decoding="async"></span>Claude</span><span><span class="mark"><img src="assets/logos/github.webp" alt="" width="96" height="96" decoding="async"></span>GitHub Copilot</span><span><span class="mark" style="--bg:#FA0F00"><b>Cc</b></span>Adobe Creative Cloud</span><span><span class="mark"><img src="assets/logos/figma.webp" alt="" width="96" height="96" decoding="async"></span>Figma</span><span><span class="mark"><img src="assets/logos/onepassword.webp" alt="" width="96" height="96" decoding="async"></span>1Password</span><span><span class="mark"><img src="assets/logos/expressvpn.webp" alt="" width="96" height="96" decoding="async"></span>ExpressVPN</span><span><span class="mark"><img src="assets/logos/slack.webp" alt="" width="96" height="96" decoding="async"></span>Slack</span><span><span class="mark"><img src="assets/logos/grammarly.webp" alt="" width="96" height="96" decoding="async"></span>Grammarly</span><span><span class="mark"><img src="assets/logos/coursera.webp" alt="" width="96" height="96" decoding="async"></span>Coursera</span><span><span class="mark"><img src="assets/logos/skillshare.webp" alt="" width="96" height="96" decoding="async"></span>Skillshare</span><span><span class="mark"><img src="assets/logos/playstation.webp" alt="" width="96" height="96" decoding="async"></span>PlayStation Plus</span><span><span class="mark"><img src="assets/logos/nytimes.webp" alt="" width="96" height="96" decoding="async"></span>The New York Times</span><span><span class="mark"><img src="assets/logos/medium.webp" alt="" width="96" height="96" decoding="async"></span>Medium</span><span><span class="mark"><img src="assets/logos/kindle.webp" alt="" width="96" height="96" decoding="async"></span>Kindle Unlimited</span><span><span class="mark"><img src="assets/logos/strava.webp" alt="" width="96" height="96" decoding="async"></span>Strava</span><span><span class="mark"><img src="assets/logos/headspace.webp" alt="" width="96" height="96" decoding="async"></span>Headspace</span><span><span class="mark"><img src="assets/logos/whoop.webp" alt="" width="96" height="96" decoding="async"></span>WHOOP</span><span><span class="mark"><img src="assets/logos/amazon.webp" alt="" width="96" height="96" decoding="async"></span>Amazon Prime</span><span><span class="mark"><img src="assets/logos/doordash.webp" alt="" width="96" height="96" decoding="async"></span>DashPass</span><span><span class="mark"><img src="assets/logos/x.webp" alt="" width="96" height="96" decoding="async"></span>X Premium</span><span><span class="mark"><img src="assets/logos/linkedin.webp" alt="" width="96" height="96" decoding="async"></span>LinkedIn Premium</span><span><span class="mark"><img src="assets/logos/tinder.webp" alt="" width="96" height="96" decoding="async"></span>Tinder</span><span><span class="mark" style="--bg:#56625B"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="3" rx="1.2" fill="#fff" opacity=".6"/><rect x="4.5" y="7.5" width="15" height="3" rx="1.2" fill="#fff" opacity=".8"/><rect x="3" y="11.5" width="18" height="9" rx="2" fill="#fff"/></svg></span>Apple One</span><span><span class="mark"><img src="assets/logos/youtube.webp" alt="" width="96" height="96" decoding="async"></span>YouTube Premium</span><span><span class="mark"><img src="assets/logos/hulu.webp" alt="" width="96" height="96" decoding="async"></span>Hulu</span><span><span class="mark"><img src="assets/logos/primevideo.webp" alt="" width="96" height="96" decoding="async"></span>Prime Video</span><span><span class="mark"><img src="assets/logos/paramountplus.webp" alt="" width="96" height="96" decoding="async"></span>Paramount+</span><span><span class="mark"><img src="assets/logos/crunchyroll.webp" alt="" width="96" height="96" decoding="async"></span>Crunchyroll</span><span><span class="mark" style="--bg:#8A4B55"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18 3.5v11.2a3.1 3.1 0 1 1-2-2.9V8.1l-7 1.6v7.1a3.1 3.1 0 1 1-2-2.9V6.6z"/></svg></span>Apple Music</span><span><span class="mark"><img src="assets/logos/tidal.webp" alt="" width="96" height="96" decoding="async"></span>TIDAL</span><span><span class="mark"><img src="assets/logos/siriusxm.webp" alt="" width="96" height="96" decoding="async"></span>SiriusXM</span><span><span class="mark"><img src="assets/logos/googleone.webp" alt="" width="96" height="96" decoding="async"></span>Google One</span><span><span class="mark"><img src="assets/logos/onedrive.webp" alt="" width="96" height="96" decoding="async"></span>OneDrive</span><span><span class="mark"><img src="assets/logos/claude.webp" alt="" width="96" height="96" decoding="async"></span>Claude</span><span><span class="mark"><img src="assets/logos/github.webp" alt="" width="96" height="96" decoding="async"></span>GitHub Copilot</span><span><span class="mark" style="--bg:#FA0F00"><b>Cc</b></span>Adobe Creative Cloud</span><span><span class="mark"><img src="assets/logos/figma.webp" alt="" width="96" height="96" decoding="async"></span>Figma</span><span><span class="mark"><img src="assets/logos/onepassword.webp" alt="" width="96" height="96" decoding="async"></span>1Password</span><span><span class="mark"><img src="assets/logos/expressvpn.webp" alt="" width="96" height="96" decoding="async"></span>ExpressVPN</span><span><span class="mark"><img src="assets/logos/slack.webp" alt="" width="96" height="96" decoding="async"></span>Slack</span><span><span class="mark"><img src="assets/logos/grammarly.webp" alt="" width="96" height="96" decoding="async"></span>Grammarly</span><span><span class="mark"><img src="assets/logos/coursera.webp" alt="" width="96" height="96" decoding="async"></span>Coursera</span><span><span class="mark"><img src="assets/logos/skillshare.webp" alt="" width="96" height="96" decoding="async"></span>Skillshare</span><span><span class="mark"><img src="assets/logos/playstation.webp" alt="" width="96" height="96" decoding="async"></span>PlayStation Plus</span><span><span class="mark"><img src="assets/logos/nytimes.webp" alt="" width="96" height="96" decoding="async"></span>The New York Times</span><span><span class="mark"><img src="assets/logos/medium.webp" alt="" width="96" height="96" decoding="async"></span>Medium</span><span><span class="mark"><img src="assets/logos/kindle.webp" alt="" width="96" height="96" decoding="async"></span>Kindle Unlimited</span><span><span class="mark"><img src="assets/logos/strava.webp" alt="" width="96" height="96" decoding="async"></span>Strava</span><span><span class="mark"><img src="assets/logos/headspace.webp" alt="" width="96" height="96" decoding="async"></span>Headspace</span><span><span class="mark"><img src="assets/logos/whoop.webp" alt="" width="96" height="96" decoding="async"></span>WHOOP</span><span><span class="mark"><img src="assets/logos/amazon.webp" alt="" width="96" height="96" decoding="async"></span>Amazon Prime</span><span><span class="mark"><img src="assets/logos/doordash.webp" alt="" width="96" height="96" decoding="async"></span>DashPass</span><span><span class="mark"><img src="assets/logos/x.webp" alt="" width="96" height="96" decoding="async"></span>X Premium</span><span><span class="mark"><img src="assets/logos/linkedin.webp" alt="" width="96" height="96" decoding="async"></span>LinkedIn Premium</span><span><span class="mark"><img src="assets/logos/tinder.webp" alt="" width="96" height="96" decoding="async"></span>Tinder</span><span><span class="mark" style="--bg:#56625B"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="3" rx="1.2" fill="#fff" opacity=".6"/><rect x="4.5" y="7.5" width="15" height="3" rx="1.2" fill="#fff" opacity=".8"/><rect x="3" y="11.5" width="18" height="9" rx="2" fill="#fff"/></svg></span>Apple One</span></div></div>
+</section>
+
+<section id="try" class="section" aria-labelledby="try-title">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="try-title" class="wide">What do you pay for?</h2>
+      <p>Tap the ones you have, as on Paydar's first screen. The prices are the same typical ones the app fills in for you.</p>
+    </div>
+    <div class="try-grid">
+      <div>
+        <div class="controls">
+          <div class="seg" role="group" aria-label="Currency">
+            <button type="button" data-cur="USD" aria-pressed="true">US dollars</button>
+            <button type="button" data-cur="CAD" aria-pressed="false">Canadian dollars</button>
+          </div>
+          <p data-count>3 of 16 picked</p>
+        </div>
+        <ul class="chips" data-chips>
+          <li><button type="button" class="chip" data-usd="19.99" data-cad="18.99" aria-pressed="true"><span class="logo"><img src="assets/logos/netflix.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">Netflix</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="12.99" data-cad="13.99" aria-pressed="true"><span class="logo"><img src="assets/logos/spotify.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">Spotify</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="15.99" data-cad="12.99" aria-pressed="false"><span class="logo"><img src="assets/logos/youtube.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">YouTube Premium</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="21.49" data-cad="16.99" aria-pressed="false"><span class="logo"><img src="assets/logos/disneyplus.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">Disney+</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="14.99" data-cad="9.99" aria-pressed="false"><span class="logo"><img src="assets/logos/amazon.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">Amazon Prime</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="2.99" data-cad="3.99" aria-pressed="true"><span class="logo" style="--bg:#4F7396"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M7.2 18.5h10.3a4.1 4.1 0 0 0 .5-8.17 5.6 5.6 0 0 0-10.7-1.2A4.7 4.7 0 0 0 7.2 18.5z"/></svg></span><span class="txt"><span class="n">iCloud+</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="14.99" data-cad="14.99" aria-pressed="false"><span class="logo" style="--bg:#3B4650"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="12.5" rx="2.2" fill="#fff"/><rect x="8" y="18.6" width="8" height="1.8" rx=".9" fill="#fff"/></svg></span><span class="txt"><span class="n">Apple TV</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="18.49" data-cad="" aria-pressed="false"><span class="logo"><img src="assets/logos/max.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">HBO Max</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="12.49" data-cad="" aria-pressed="false"><span class="logo"><img src="assets/logos/hulu.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">Hulu</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="11.99" data-cad="11.99" aria-pressed="false"><span class="logo" style="--bg:#8A4B55"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M18 3.5v11.2a3.1 3.1 0 1 1-2-2.9V8.1l-7 1.6v7.1a3.1 3.1 0 1 1-2-2.9V6.6z"/></svg></span><span class="txt"><span class="n">Apple Music</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="20.00" data-cad="" aria-pressed="false"><span class="logo"><img src="assets/logos/chatgpt.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">ChatGPT</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="8.99" data-cad="" aria-pressed="false"><span class="logo"><img src="assets/logos/primevideo.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">Prime Video</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="14.99" data-cad="17.99" aria-pressed="false"><span class="logo"><img src="assets/logos/xbox.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">Xbox Game Pass</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="10.99" data-cad="14.99" aria-pressed="false"><span class="logo"><img src="assets/logos/playstation.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">PlayStation Plus</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="" data-cad="" aria-pressed="false"><span class="logo"><img src="assets/logos/duolingo.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">Duolingo</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+          <li><button type="button" class="chip" data-usd="9.99" data-cad="11.50" aria-pressed="false"><span class="logo"><img src="assets/logos/microsoft365.webp" alt="" width="96" height="96" decoding="async" loading="lazy"></span><span class="txt"><span class="n">Microsoft 365</span><span class="p num"></span></span><span class="tick"><svg viewBox="0 0 14 14"><path d="M2.5 7.5l3 3 6-7"/></svg></span></button></li>
+        </ul>
+      </div>
+      <div class="tally-wrap">
+        <div class="tally" data-tilt aria-live="polite" aria-atomic="true">
+          <svg class="rosette" viewBox="-500 -500 1000 1000" aria-hidden="true" data-rosette><path/></svg>
+          <p class="label">You pay</p>
+          <p class="total"><strong class="num" data-month>$35.97</strong><span>a month</span></p>
+          <p class="sub"><span class="num" data-year>$432</span> a year, for <span data-subs>3 subscriptions</span></p>
+          <p class="vs" data-vs>Paydar is free for your first 3, then <b>$2.99 once</b>. Your subscriptions spend that much about every 3 days.</p>
+        </div>
+      </div>
+    </div>
+    <p class="fine">Typical prices for each service's usual monthly plan, checked on 7 October 2026: the same ones Paydar fills in. Your bill may differ, and you can change any price in the app. Where nobody could confirm a price (Duolingo, and five services in Canadian dollars), you type it in. Other currencies work too; you type those prices.</p>
+  </div>
+</section>
+
+<section id="features" class="section" aria-labelledby="features-title" style="padding-top:24px">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="features-title" class="wide">It warns you before the charge, not after</h2>
+      <p>Real screens from the app, shown with its sample list.</p>
+    </div>
+    <div class="bento">
+      <article class="tile t-remind" data-tilt>
+        <h3>A heads-up the day before every charge</h3>
+        <p>At the time you choose. Or on the day, 3 days or a week before, set for each subscription. Send yourself a test reminder to see it work. This one is real, delivered by iOS.</p>
+        <div class="shot"><figure class="phone"><img src="assets/2-reminder.webp" width="640" height="1391" loading="lazy" alt="A Paydar reminder on the iPhone Lock Screen: Netflix renews tomorrow. $19.99 a month. Tap to review or cancel."></figure></div>
+      </article>
+      <article class="tile t-trial" data-tilt>
+        <span class="big num" aria-hidden="true">3 days</span>
+        <h3>Catch free trials before they charge</h3>
+        <p>Free trials get two warnings, 3 days and 1 day before they end, and Home counts down the days.</p>
+        <div class="shot"><figure class="phone"><img src="assets/4-trial.webp" width="640" height="1391" loading="lazy" alt="Disney+ in Paydar: free trial, 3 days left, then $21.49 a month from October 10, with a button for how to cancel the trial."></figure></div>
+      </article>
+      <article class="tile t-cancel" data-tilt>
+        <span class="big num" aria-hidden="true">$192</span>
+        <h3>Not worth it? See how to cancel</h3>
+        <p>Mark each one "Worth it" or "Not really" and see what canceling saves in a year: $192 for YouTube Premium. "How to cancel" opens the right page; Paydar can't cancel for you.</p>
+        <div class="shot"><figure class="phone"><img src="assets/5-cancel.webp" width="640" height="1391" loading="lazy" alt="YouTube Premium in Paydar marked Not really: canceling saves $192 a year, with a How to cancel button."></figure></div>
+      </article>
+      <article class="tile t-spend" data-tilt>
+        <h3>See where it all goes</h3>
+        <p>Spending by category, your biggest costs and price rises. Weekly, monthly, quarterly and yearly bills add up to one honest total.</p>
+        <div class="shot"><figure class="phone"><img src="assets/6-spending.webp" width="640" height="1391" loading="lazy" alt="Spending in Paydar: a category ring adding up to $133.87 a month, the total for each category, and You could save $192 a year."></figure></div>
+      </article>
+      <article class="tile t-cal" data-tilt>
+        <h3>Every charge on one calendar</h3>
+        <p>A logo on every day something bills, and this month's charges listed underneath, so a heavy week never surprises you.</p>
+        <div class="shot"><figure class="phone"><img src="assets/7-calendar.webp" width="640" height="1391" loading="lazy" alt="Paydar's calendar for October 2026, with a logo on every charge day and this month's charges listed underneath."></figure></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="wrist" aria-labelledby="wrist-title">
+  <div class="wrap wrist-grid">
+    <div class="watches">
+      <figure class="watch"><img src="assets/watch-ultra-1-summary.webp" width="600" height="670" loading="lazy" alt="Paydar on Apple Watch: You pay $133.87 a month, $1,606 a year. Next up: Netflix, tomorrow, $19.99."></figure>
+      <figure class="watch"><img src="assets/watch-ultra-2-upcoming.webp" width="600" height="670" loading="lazy" alt="Paydar on Apple Watch, Coming up: Netflix tomorrow, $19.99, and a Disney+ trial with 3 days left, $21.49."></figure>
+    </div>
+    <div>
+      <div class="head">
+        <h2 id="wrist-title" class="wide">Your total, on your wrist</h2>
+        <p>The Apple Watch app shows what you pay a month and what renews next, synced from your iPhone.</p>
+      </div>
+      <ul class="ticks">
+        <li>Watch face complications for your total and the next charge</li>
+        <li>Home Screen and Lock Screen widgets on your iPhone</li>
+        <li>Light and dark, and larger text sizes</li>
+        <li>You add and edit on the iPhone; the watch keeps the last list it received</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="private-title">
+  <div class="wrap trust">
+    <div class="panel">
+      <h2 id="private-title" class="wide">Your list stays on your phone</h2>
+      <p>What you enter is stored on your iPhone, and copied to your Apple Watch if you use it. The app has no server and makes no network requests of its own. <a href="privacy.html">Read the privacy policy</a>.</p>
+      <ul class="facts">
+        <li>No account<span>Open it and start</span></li>
+        <li>No bank login<span>Nor email access</span></li>
+        <li>No ads<span>And no tracking</span></li>
+        <li>Data Not Collected<span>Apple's privacy label</span></li>
+      </ul>
+    </div>
+    <div class="limits">
+      <h3>What it doesn't do</h3>
+      <ul>
+        <li>It can't see your bank or email, so you add what you pay for. The built-in list of 102 services makes that quick.</li>
+        <li>It can't cancel anything for you. It takes you to the right page.</li>
+        <li>Typical prices are a starting point. Check them against your bill.</li>
+        <li>iPhone only (no iPad version), in English.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="closing" aria-labelledby="closing-title">
+  <svg class="rosette" viewBox="-500 -500 1000 1000" aria-hidden="true" data-rosette><path/></svg>
+  <video class="bg" data-bg-video muted loop playsinline preload="none" aria-hidden="true" poster="assets/video/closing-poster.webp">
+    <source data-src="assets/video/closing.webm" type="video/webm">
+    <source data-src="assets/video/closing.mp4" type="video/mp4">
+  </video>
+  <h2 id="closing-title" class="wide num foil-text">$2.99. Once.</h2>
+  <p>Start free with up to 3 subscriptions, everything working: reminders, free-trial warnings, the Apple Watch app and widgets. One in-app purchase unlocks unlimited. No subscription, no ads, no account.</p>
+  <div class="cta">
+    <span class="soon when-soon" role="note">Coming soon to the App Store</span>
+    <a class="badge when-live" href="https://apps.apple.com/app/id6820240753"><img src="assets/app-store-badge-white.svg" width="162" height="54" alt="Download on the App Store"></a>
+  </div>
+  <p class="req-line">Free download. Needs an iPhone with iOS 26 or later; the Apple Watch app is optional (watchOS 26). Unlimited: $2.99 in the US, CA$3.99 in Canada, and the local price elsewhere.</p>
+  <p class="origin">Paydar began in AI Build Night, a YouTube series where AI builds real apps on camera. One person then tested, checked and finished it. <a href="https://youtu.be/j_1tDzErolo" rel="noopener">Watch the episode</a>.</p>
+</section>
+
+<section id="help" class="section" aria-labelledby="help-title">
+  <div class="wrap">
+    <div class="head">
+      <h2 id="help-title" class="wide">Help</h2>
+      <p>Answers to common questions. Still stuck? Email me.</p>
+    </div>
+    <div class="help-grid">
+<div class="group" id="faq">
+    <details>
+      <summary>Does Paydar collect my data?</summary>
+      <div class="ans">
+        <p><strong>No.</strong> There is no account, no analytics, no advertising and no tracking, and the app makes no network requests of its own. What you enter is stored on your iPhone, and copied to your Apple Watch if you use the watch app. Links you open (a provider's cancel page, your Apple subscriptions) open in Safari or the App Store. Full details are in the <a href="privacy.html">privacy policy</a>.</p>
+      </div>
+    </details>
+    <details>
+      <summary>My reminders aren't arriving</summary>
+      <div class="ans">
+        <p>Go through these in order:</p>
+        <ol>
+          <li><strong>Allow notifications.</strong> On your iPhone: Settings, Notifications, Paydar, and turn on Allow Notifications.</li>
+          <li><strong>Turn reminders on in the app.</strong> Open Paydar, tap the gear, and switch on "Remind me before charges". Check the "When" and "At" settings there.</li>
+          <li><strong>Check the subscription.</strong> Open it and look at "Remind me". It can be off, on the day, 1 day, 3 days or 1 week before.</li>
+          <li><strong>Try the test.</strong> In the gear screen, tap "Send a test reminder". It arrives in about 5 seconds. It reads like your next real reminder; until you have set a charge date it is a plain "Reminders are working". If it arrives, reminders work and the real ones are waiting for their day.</li>
+          <li><strong>Check Focus and Notification Summary.</strong> A Focus mode or a scheduled summary can hide or delay a reminder.</li>
+        </ol>
+        <p>Good to know: a charge date that is only a guess (quick add guesses one) gets no reminder until you set it, so tap "Set the dates" on Home. If you add something after its usual reminder time has already passed, Paydar sends one reminder about a minute later. iOS lets an app keep 64 reminders scheduled at once, so Paydar schedules the nearest ones, tops them up each time you open the app and in the background when iOS allows, and the last one asks you to open Paydar. If you track many subscriptions and haven't opened Paydar for a few months, open it once.</p>
+      </div>
+    </details>
+    <details>
+      <summary>The Apple Watch app isn't showing my subscriptions</summary>
+      <div class="ans">
+        <ol>
+          <li>Make sure the Paydar watch app is installed: on your iPhone open the Watch app, find Paydar, and turn on "Show App on Apple Watch".</li>
+          <li>Open Paydar on your iPhone, then open Paydar on your watch. Keep the iPhone nearby with Bluetooth on.</li>
+          <li>The watch gets a fresh copy whenever something changes on the iPhone. If it still looks old, change anything small on the iPhone (or just reopen the app) and look again.</li>
+          <li>If it is still empty, restart both devices and open the iPhone app first.</li>
+        </ol>
+        <p>The watch app only shows your list. You add and edit subscriptions on the iPhone. When your iPhone is out of reach, the watch shows the last list it received.</p>
+      </div>
+    </details>
+    <details>
+      <summary>How do I import a spreadsheet (CSV)?</summary>
+      <div class="ans">
+        <p>Open Paydar, tap the gear, then "Import from a spreadsheet", and choose your file. Paydar shows what it found; tap "Add" to bring them in.</p>
+        <p>The first row must be a header. Required columns: <code>name</code>, <code>amount</code>, <code>cycle</code> (weekly, monthly, quarterly or yearly) and <code>next_charge</code> (a date like <code>2026-10-21</code>). Optional columns: <code>plan</code>, <code>category</code>, <code>status</code>, <code>service</code>, <code>notes</code>. Amounts can be written <code>9.99</code>, <code>$9.99</code> or <code>9,99</code>.</p>
+        <p>If one row has a problem, Paydar adds nothing and tells you which row. The easiest start: add one subscription by hand, tap "Export to a spreadsheet", and use that file as your template.</p>
+      </div>
+    </details>
+    <details>
+      <summary>How do I cancel a subscription?</summary>
+      <div class="ans">
+        <p><strong>Paydar can't cancel for you.</strong> It takes you to the right page.</p>
+        <ol>
+          <li>Open the subscription in Paydar and tap "How to cancel". Depending on the service it opens the provider's own page, your Apple subscriptions, or a web search.</li>
+          <li>If the service is billed through Apple: on your iPhone open Settings, tap your name, tap Subscriptions, choose the one you want and tap Cancel.</li>
+          <li>Come back to Paydar. It asks "Did you cancel?". Tap "Yes, I canceled" and it stops counting it and shows what you save each year.</li>
+        </ol>
+        <p>Deleting a subscription in Paydar only removes it from the app. It never cancels anything with the provider.</p>
+      </div>
+    </details>
+    <details>
+      <summary>How do I get a refund?</summary>
+      <div class="ans">
+        <p>Apple handles every App Store purchase, so refunds come from Apple, not from me. Go to <a href="https://reportaproblem.apple.com" rel="noopener">reportaproblem.apple.com</a>, sign in with the Apple Account you bought it with, and choose Paydar. Apple decides refund requests under its own policy. If something is broken, please email me first: I would rather fix it.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Do the typical prices fill in for my country?</summary>
+      <div class="ans">
+        <p>When your currency is US or Canadian dollars, Paydar fills in a typical price for most of the popular services (checked on 7 October 2026). A few popular services have no price we could confirm in Canada, and most of the less common ones don't fill in a price, so you type those. They are list prices for the usual plan and may be out of date, so change any price to match your bill. In any other currency you type the price yourself.</p>
+      </div>
+    </details>
+    <details>
+      <summary>Does it connect to my bank or email to find subscriptions?</summary>
+      <div class="ans">
+        <p>No. Paydar never asks for a bank login or email access, which is why nothing about you leaves your phone. The trade-off is that you add what you pay for yourself. The 102 built-in services make that quick: tap the logos you have.</p>
+      </div>
+    </details>
+    <details>
+      <summary>How do I move to a new iPhone?</summary>
+      <div class="ans">
+        <p>Before you switch, open Paydar, tap the gear, and tap "Export to a spreadsheet" to save a copy. On the new iPhone, install Paydar and use "Import from a spreadsheet". If you restore the new iPhone from a backup, Paydar's data may come across with it, as it does for most apps.</p>
+      </div>
+    </details>
+    <details>
+      <summary>What does it need to run?</summary>
+      <div class="ans">
+        <p>An iPhone with iOS 26 or later. The Apple Watch app is optional and needs watchOS 26 or later. There is no iPad version. The app is in English.</p>
+      </div>
+    </details>
+  </div>
+  <div class="contact" id="contact">
+    <h3>Contact</h3>
+    <p>Something broken, or a service you'd like added? Email me. I'm one person, and I read every message.</p>
+    <p class="mail"><a href="mailto:support@overcrank.ca">support@overcrank.ca</a></p>
+    <p class="muted">It's the same inbox as my other app, Overcrank. Tell me your iPhone model, iOS version, and what you tapped. Please don't send passwords or card numbers; I will never ask for them.</p>
+  </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="wrap">
+<footer>
+  <p class="links"><a href="privacy.html">Privacy policy</a><a href="#help">Help</a><a href="#contact">Contact</a><a href="https://www.youtube.com/@madebyhussam" rel="noopener">@madebyhussam on YouTube</a></p>
+  <p>Service names and logos belong to their owners. Paydar isn't affiliated with them. Apple, the Apple logo, iPhone and Apple Watch are trademarks of Apple Inc., registered in the U.S. and other countries. App Store is a service mark of Apple Inc.</p>
+  <p>&copy; 2026 Hussam Fazal</p>
+</footer>
+</div>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Guilloché rosette: the same maths as Rosette in Shared/DesignSystem.swift and tools/guilloche.py
+  var d = '', rings = 20, lobes = 32, R = 480, inner = R * .12, gap = (R - inner) / rings, steps = lobes * 12;
+  for (var i = 0; i < rings; i++) {
+    var base = inner + gap * (i + 1), amp = gap * 1.6, ph = i * Math.PI;
+    for (var s = 0; s <= steps; s++) {
+      var t = s / steps * 2 * Math.PI, r = base + amp * Math.sin(lobes * t + ph);
+      d += (s ? 'L' : 'M') + (r * Math.cos(t)).toFixed(1) + ' ' + (r * Math.sin(t)).toFixed(1);
+    }
+    d += 'Z';
+  }
+  document.querySelectorAll('[data-rosette] path').forEach(function(p){ p.setAttribute('d', d); });
+
+  // The "What do you pay for?" demo
+  var chips = [].slice.call(document.querySelectorAll('[data-chips] .chip'));
+  var segs = [].slice.call(document.querySelectorAll('[data-cur]'));
+  var lang = (navigator.languages && navigator.languages[0]) || navigator.language || '';
+  var cur = /-CA$/i.test(lang) ? 'CAD' : 'USD';
+  var paydar = { USD: 2.99, CAD: 3.99 };
+  function money(v, whole) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: cur, minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: whole ? 0 : 2 }).format(v);
+  }
+  function price(c) { return c.getAttribute(cur === 'USD' ? 'data-usd' : 'data-cad'); }
+  function render() {
+    var month = 0, n = 0;
+    segs.forEach(function(b){ b.setAttribute('aria-pressed', String(b.getAttribute('data-cur') === cur)); });
+    chips.forEach(function(c){
+      var p = price(c), label = c.querySelector('.p');
+      if (!p) {
+        c.setAttribute('aria-disabled', 'true'); c.setAttribute('aria-pressed', 'false');
+        label.textContent = 'You type the price';
+      } else {
+        c.removeAttribute('aria-disabled');
+        label.textContent = money(+p) + ' a month';
+        if (c.getAttribute('aria-pressed') === 'true') { month += +p; n++; }
+      }
+    });
+    var year = month * 12;
+    document.querySelector('[data-month]').textContent = money(month);
+    document.querySelector('[data-year]').textContent = money(year, true);
+    document.querySelector('[data-subs]').textContent = n + (n === 1 ? ' subscription' : ' subscriptions');
+    document.querySelector('[data-count]').textContent = n + ' of ' + chips.length + ' picked';
+    var vs = document.querySelector('[data-vs]'), cost = money(paydar[cur]);
+    if (!n) {
+      vs.innerHTML = 'Tap what you pay for to see your total. Paydar is free for your first 3, then <b>' + cost + ' once</b>.';
+    } else {
+      var perDay = year / 365, days = Math.round(paydar[cur] / perDay);
+      vs.innerHTML = 'Paydar is free for your first 3, then <b>' + cost + ' once</b>. ' + (perDay >= paydar[cur]
+        ? 'Your subscriptions spend more than that every day.'
+        : 'Your subscriptions spend that much about every ' + (days <= 1 ? 'day' : days + ' days') + '.');
+    }
+  }
+  chips.forEach(function(c){
+    c.addEventListener('click', function(){
+      if (c.getAttribute('aria-disabled') === 'true') return;
+      c.setAttribute('aria-pressed', String(c.getAttribute('aria-pressed') !== 'true'));
+      render();
+    });
+  });
+  segs.forEach(function(b){ b.addEventListener('click', function(){ cur = b.getAttribute('data-cur'); render(); }); });
+  render();
+
+  // The holographic foil turns with the pointer (or with scrolling on touch screens)
+  var root = document.documentElement, fine = matchMedia('(hover: hover) and (pointer: fine)').matches, angle = 140, queued = 0;
+  function foil(a) { angle = a; if (!queued) queued = requestAnimationFrame(function(){ queued = 0; root.style.setProperty('--foil', angle.toFixed(1) + 'deg'); }); }
+  if (!reduce) {
+    if (fine) addEventListener('pointermove', function(e){ foil(90 + e.clientX / innerWidth * 170 + e.clientY / innerHeight * 70); }, { passive: true });
+    else addEventListener('scroll', function(){ foil(140 + (scrollY % 1600) / 1600 * 200); }, { passive: true });
+  }
+
+  // Cards lean a little toward the pointer
+  if (!reduce && fine) {
+    document.querySelectorAll('[data-tilt]').forEach(function(el){
+      el.addEventListener('pointermove', function(e){
+        var r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+        el.style.setProperty('--rx', (x * 5).toFixed(2) + 'deg'); el.style.setProperty('--ry', (-y * 5).toFixed(2) + 'deg');
+      });
+      el.addEventListener('pointerleave', function(){ el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); });
+    });
+  }
+
+  // The reminder lands at the end of the 3D intro (hero3d.js adds is-in); this is the fallback when 3D can't run
+  var banner = document.querySelector('[data-hero-banner]');
+  if (banner) setTimeout(function(){ banner.classList.add('is-in'); }, reduce ? 0 : 3200);
+
+  // The closing clip loads only near the viewport, with motion allowed and Save-Data off
+  var v = document.querySelector('[data-bg-video]'), save = navigator.connection && navigator.connection.saveData;
+  if (v && !reduce && !save && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) {
+          if (!v.dataset.loaded) { v.querySelectorAll('source').forEach(function(s){ s.src = s.dataset.src; }); v.load(); v.dataset.loaded = '1'; }
+          var p = v.play(); if (p && p.catch) p.catch(function(){});
+        } else if (v.dataset.loaded) v.pause();
+      });
+    }, { rootMargin: '200px' }).observe(v);
+  } else if (v) v.remove();
+})();
+</script>
+<script type="module" src="assets/hero3d.js"></script>
+</body>
+</html>
