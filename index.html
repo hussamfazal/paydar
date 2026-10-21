@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en" data-store="soon">
+<html lang="en" data-store="live">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Paydar: Subscription Tracker for iPhone and Apple Watch</title>
-<meta name="description" content="Track subscriptions and free trials, see what you really pay, and get a reminder the day before every charge. Free for your first 3, then $2.99 once. No account, no ads, no subscription. iPhone and Apple Watch.">
+<meta name="description" content="Paydar: Subscription Tracker for iPhone and Apple Watch. See what you really pay and get a reminder the day before every charge and before free trials end. Free for your first 3, then $2.99 once in the US (CA$3.99 in Canada). No account, no ads. Needs iOS 26.">
 <link rel="canonical" href="https://hussamfazal.github.io/paydar/">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="author" content="Hussam Fazal">
@@ -15,8 +15,8 @@
 <link rel="preload" href="assets/1-home.webp" as="image" type="image/webp">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Paydar">
-<meta property="og:title" content="Paydar: see every charge coming">
-<meta property="og:description" content="The subscription tracker that isn't a subscription. A reminder the day before every charge and before free trials end. Free for your first 3, then $2.99 once. iPhone and Apple Watch.">
+<meta property="og:title" content="Paydar: Subscription Tracker. See every charge coming.">
+<meta property="og:description" content="The subscription tracker that isn't a subscription. A reminder the day before every charge and before free trials end. Free for your first 3, then $2.99 once in the US (CA$3.99 in Canada). No account, no ads. iPhone and Apple Watch.">
 <meta property="og:url" content="https://hussamfazal.github.io/paydar/">
 <meta property="og:image" content="https://hussamfazal.github.io/paydar/og.png">
 <meta property="og:image:width" content="1200">
@@ -24,22 +24,18 @@
 <meta property="og:image:alt" content="Paydar on iPhone: You pay $133.87 a month, and a reminder that Netflix renews tomorrow">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Paydar: see every charge coming">
-<meta name="twitter:description" content="The subscription tracker that isn't a subscription. A reminder the day before every charge and before free trials end. Free for your first 3, then $2.99 once.">
+<meta name="twitter:title" content="Paydar: Subscription Tracker. See every charge coming.">
+<meta name="twitter:description" content="The subscription tracker that isn't a subscription. A reminder the day before every charge and before free trials end. Free for your first 3, then $2.99 once in the US (CA$3.99 in Canada). No account, no ads.">
 <meta name="twitter:image" content="https://hussamfazal.github.io/paydar/og.png">
 <!--
-  LAUNCH DAY CHECKLIST (search this file for REPLACE-ON-LAUNCH):
-  1. On the <html> tag, change data-store="soon" to data-store="live". That swaps every "Coming soon" note for the
-     official App Store badge, which already links to https://apps.apple.com/app/id6820240753 (add ?pt=…&ct=site&mt=8
-     once the provider token is known; LAUNCH-PLAN.md 12.1).
-  2. Uncomment the Smart App Banner meta tag below.
-  3. JSON-LD: change "availability" from PreOrder to InStock and add "installUrl" with the App Store link.
+  LAUNCH DAY CHECKLIST: DONE 20 Oct 2026 (Paydar went live on the App Store, id6820240753).
+  1. <html data-store="live">: the pre-launch notes are gone and the official App Store badge links to
+     https://apps.apple.com/app/id6820240753. Add ?pt=…&ct=site&mt=8 once the provider token is known (LAUNCH-PLAN.md 12.1).
+  2. The Smart App Banner meta tag below is on.
+  3. JSON-LD: "availability" is InStock and "installUrl" is the App Store link.
   4. Done 8 Oct: the support email is support@overcrank.ca (Overcrank's inbox, shared; owner's choice).
-  Nothing on this page is published until the owner says so.
 -->
-<!-- REPLACE-ON-LAUNCH (Smart App Banner):
 <meta name="apple-itunes-app" content="app-id=6820240753">
--->
 <style>
 @font-face{
   font-family:"Archivo Wide";
@@ -380,14 +376,15 @@ footer p{margin:0 0 8px}
   "softwareRequirements": "iPhone with iOS 26 or later. The Apple Watch app needs watchOS 26 or later.",
   "inLanguage": "en",
   "isAccessibleForFree": true,
+  "installUrl": "https://apps.apple.com/app/id6820240753",
   "image": "https://hussamfazal.github.io/paydar/og.png",
   "screenshot": "https://hussamfazal.github.io/paydar/assets/1-home.webp",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD",
-    "availability": "https://schema.org/PreOrder",
-    "url": "https://hussamfazal.github.io/paydar/"
+    "availability": "https://schema.org/InStock",
+    "url": "https://apps.apple.com/app/id6820240753"
   },
   "featureList": [
     "Add subscriptions from 102 built-in services with one tap, or type your own",
@@ -400,7 +397,7 @@ footer p{margin:0 0 8px}
   ],
   "author": { "@type": "Person", "name": "Hussam Fazal", "url": "https://www.youtube.com/@madebyhussam" },
   "publisher": { "@type": "Person", "name": "Hussam Fazal" },
-  "url": "https://hussamfazal.github.io/paydar/"
+  "url": "https://apps.apple.com/app/id6820240753"
 }
 </script>
 </head>
@@ -427,8 +424,6 @@ footer p{margin:0 0 8px}
     <p class="lede">Paydar keeps your subscriptions and free trials in one list, adds up what you really pay, and reminds you the day before every charge. For iPhone and Apple Watch.</p>
     <p class="denom"><span class="amount wide num foil-text">Free</span><span class="terms">for your first 3.<br>Then $2.99 once. No subscription.</span></p>
     <div class="cta">
-      <span class="soon when-soon" role="note">Coming soon to the App Store</span>
-      <!-- REPLACE-ON-LAUNCH: shown when data-store="live" -->
       <a class="badge when-live" href="https://apps.apple.com/app/id6820240753"><img src="assets/app-store-badge-white.svg" width="162" height="54" alt="Download on the App Store"></a>
       <a class="more" href="#try">Work out what you pay</a>
     </div>
@@ -593,7 +588,6 @@ footer p{margin:0 0 8px}
   <h2 id="closing-title" class="wide num foil-text">$2.99. Once.</h2>
   <p>Start free with up to 3 subscriptions, everything working: reminders, free-trial warnings, the Apple Watch app and widgets. One in-app purchase unlocks unlimited. No subscription, no ads, no account.</p>
   <div class="cta">
-    <span class="soon when-soon" role="note">Coming soon to the App Store</span>
     <a class="badge when-live" href="https://apps.apple.com/app/id6820240753"><img src="assets/app-store-badge-white.svg" width="162" height="54" alt="Download on the App Store"></a>
   </div>
   <p class="req-line">Free download. Needs an iPhone with iOS 26 or later; the Apple Watch app is optional (watchOS 26). Unlimited: $2.99 in the US, CA$3.99 in Canada, and the local price elsewhere.</p>
